@@ -155,5 +155,5 @@ Contributions are welcome! Please fork the repository and submit a pull request 
 ---
 
 ## Contact
-For questions or support, please contact [your_email@example.com].
+For questions or support, please contact [harshitasinghcal4839@gmail.com].
 
