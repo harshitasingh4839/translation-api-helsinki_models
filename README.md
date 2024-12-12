@@ -22,7 +22,7 @@ This repository provides a robust translation service using the MarianMT model f
 ### Steps
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your_username/translation-api.git
+   git clone https://github.com/harshitasingh4839/translation-api-helsinki_models.git
    cd translation-api
    ```
 
