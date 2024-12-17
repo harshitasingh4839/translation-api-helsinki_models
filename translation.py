@@ -1,6 +1,7 @@
 import torch
 from transformers import MarianMTModel, MarianTokenizer
-from langdetect import detect, LangDetectException
+# from langdetect import detect, LangDetectException
+import fasttext
 import logging
 
 class Translator:
@@ -49,22 +50,51 @@ class Translator:
             self.logger.warning(f"Language detection failed: {e}")
             self.src_lang = "en"  # Default to English
 
+    # def detect_src_lang(self):
+    #     """
+    #     Detect the source language with robust error handling.
+
+    #     Returns:
+    #     str: The detected source language code.
+    #     """
+    #     try:
+    #         # Use language detection with a timeout
+    #         return detect(self.text)
+    #     except LangDetectException as e:
+    #         self.logger.error(f"Language detection error: {e}")
+    #         raise
+    #     except Exception as e:
+    #         self.logger.error(f"Unexpected error in language detection: {e}")
+    #         return "en"  # Default to English
+
     def detect_src_lang(self):
         """
-        Detect the source language with robust error handling.
+        Detect the source language using fasttext with robust error handling.
 
         Returns:
         str: The detected source language code.
+        
+        Note: 
+        - Assumes a pre-trained fasttext language detection model is available
+        - Falls back to 'en' (English) if detection fails
         """
         try:
-            # Use language detection with a timeout
-            return detect(self.text)
-        except LangDetectException as e:
-            self.logger.error(f"Language detection error: {e}")
-            raise
+            model = fasttext.load_model('lid.176.ftz')
+            predictions = model.predict(self.text, k=1)
+            detected_lang = predictions[0][0].replace('__label__', '')
+            self.logger.info(f"Detected source language: {detected_lang}")
+            return detected_lang
+        
+        except FileNotFoundError:
+            # Handle case where model file is missing
+            self.logger.warning("Language detection model not found. Falling back to English.")
+            return "en"
+        
         except Exception as e:
+            # Catch any unexpected errors during language detection
             self.logger.error(f"Unexpected error in language detection: {e}")
-            return "en"  # Default to English
+            return "en"
+                
 
     def load_model(self, model_name):
         """
