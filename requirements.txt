@@ -6,4 +6,4 @@ sentencepiece
 sacremoses
 numpy==1.22.4
 pandas==2.2.3
-
+fasttext-wheel
