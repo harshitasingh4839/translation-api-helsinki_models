@@ -68,16 +68,6 @@ class Translator:
     #         return "en"  # Default to English
 
     def detect_src_lang(self):
-        """
-        Detect the source language using fasttext with robust error handling.
-
-        Returns:
-        str: The detected source language code.
-        
-        Note: 
-        - Assumes a pre-trained fasttext language detection model is available
-        - Falls back to 'en' (English) if detection fails
-        """
         try:
             model = fasttext.load_model('lid.176.ftz')
             predictions = model.predict(self.text, k=1)
